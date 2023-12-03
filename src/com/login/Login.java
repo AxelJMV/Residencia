@@ -7,6 +7,7 @@ public class Login extends javax.swing.JFrame {
     int xMouse, yMouse;
     
     public Login() {
+        System.out.println("Hola");
         initComponents();
     }
     
@@ -45,11 +46,11 @@ public class Login extends javax.swing.JFrame {
         bg.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 90, 290, 140));
 
         logoname.setBackground(new java.awt.Color(255, 255, 255));
-        logoname.setFont(new java.awt.Font("Roboto Medium", 1, 24)); // NOI18N
+        logoname.setFont(new java.awt.Font("Roboto Medium", 1, 36)); // NOI18N
         logoname.setForeground(new java.awt.Color(255, 255, 255));
         logoname.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         logoname.setText("SEIS S.A de C.V");
-        bg.add(logoname, new org.netbeans.lib.awtextra.AbsoluteConstraints(554, 250, 290, 20));
+        bg.add(logoname, new org.netbeans.lib.awtextra.AbsoluteConstraints(554, 250, 290, 30));
 
         citybg.setBackground(new java.awt.Color(0, 134, 190));
         citybg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/images/city.png"))); // NOI18N
