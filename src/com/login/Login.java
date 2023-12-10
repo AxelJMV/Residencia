@@ -1,6 +1,8 @@
 package com.login;
 
+import com.impldao.DAOUsuarioImpl;
 import java.awt.Color;
+import java.sql.SQLException;
 
 public class Login extends javax.swing.JFrame {
     
@@ -259,7 +261,20 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_passTxtMousePressed
 
     private void loginBtnTxtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginBtnTxtMouseClicked
-        javax.swing.JOptionPane.showMessageDialog(this, "Intento de login con los datos:\nUsuario: " + userTxt.getText() + "\nContraseña: " + String.valueOf(passTxt.getPassword()), "LOGIN", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        String usuario = userTxt.getText();
+    String contrasena = String.valueOf(passTxt.getPassword());
+
+    try {
+        DAOUsuarioImpl daoUsuario = new DAOUsuarioImpl();
+        if (daoUsuario.autenticarUsuario(usuario, contrasena)) {
+            javax.swing.JOptionPane.showMessageDialog(this, "¡Inicio de sesión exitoso!", "LOGIN EXITOSO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.", "ERROR DE LOGIN", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        javax.swing.JOptionPane.showMessageDialog(this, "Error al autenticar el usuario. Consulta la consola para obtener detalles.", "ERROR", javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_loginBtnTxtMouseClicked
 
     /**
