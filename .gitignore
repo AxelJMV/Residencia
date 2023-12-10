@@ -1,1 +1,14 @@
 *.class
+# NetBeans-specific
+/nbproject/private/
+/dist/
+/nbproject/ProjectPrivate.properties
+/nbproject/ProjectPrivate.xml
+/build/
+/nbbuild/
+/nbdist/
+/nbactions.xml
+/nb-configuration.xml
+*.log
+*.bak
+*.form
