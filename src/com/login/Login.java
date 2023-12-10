@@ -1,6 +1,7 @@
 package com.login;
 
 import com.impldao.DAOUsuarioImpl;
+import com.menu.Menu;
 import java.awt.Color;
 import java.sql.SQLException;
 
@@ -262,12 +263,37 @@ public class Login extends javax.swing.JFrame {
 
     private void loginBtnTxtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginBtnTxtMouseClicked
         String usuario = userTxt.getText();
-    String contrasena = String.valueOf(passTxt.getPassword());
+        String contrasena = String.valueOf(passTxt.getPassword());
 
     try {
         DAOUsuarioImpl daoUsuario = new DAOUsuarioImpl();
         if (daoUsuario.autenticarUsuario(usuario, contrasena)) {
             javax.swing.JOptionPane.showMessageDialog(this, "¡Inicio de sesión exitoso!", "LOGIN EXITOSO", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            
+            if(daoUsuario.usuario.getPrimersesion() == 0){
+            String new_pass = javax.swing.JOptionPane.showInputDialog("Cambia tu contraseña");
+            int res = daoUsuario.cambiarPass(daoUsuario.usuario.getIdUser(), new_pass);                    
+                switch (res) {
+                    case 0:
+                        javax.swing.JOptionPane.showMessageDialog(this, "¡NO PUSISTE NADA USARAS LA DEFAULT!", "ACTUALIZACION DE CONTRASEÑA", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                        break;
+                    case 1:
+                        javax.swing.JOptionPane.showMessageDialog(this, "¡Cambio Exitoso!", "ACTUALIZACION DE CONTRASEÑA", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                        break;
+                    default:
+                        javax.swing.JOptionPane.showMessageDialog(this, "¡Error", "ACTUALIZACION DE CONTRASEÑA", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                        break;
+                }
+            }
+            
+                            dispose();
+
+                            Menu menu = new Menu();
+                            menu.setVisible(true);
+
+            
+            
+                        
         } else {
             javax.swing.JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.", "ERROR DE LOGIN", javax.swing.JOptionPane.ERROR_MESSAGE);
         }

@@ -20,7 +20,8 @@ public class Usuario {
         
     }
 
-    public Usuario(String user, String password, int primersesion) {
+    public Usuario(int id,String user, String password, int primersesion) {
+        this.idUser = id;
         this.user = user;
         this.password = password;
         this.primersesion = primersesion;

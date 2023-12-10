@@ -15,11 +15,16 @@ import java.util.ArrayList;
 import java.sql.SQLException;
 import java.util.List;
 
+
+
 /**
  *
  * @author Axel
  */
 public class DAOUsuarioImpl extends ConexionBD implements DAOUsuario{
+    
+public Usuario usuario;
+   
 
     @Override
     public void registrar(Usuario usuario) throws SQLException {
@@ -36,18 +41,23 @@ public class DAOUsuarioImpl extends ConexionBD implements DAOUsuario{
                     try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                         if (generatedKeys.next()) {
                             usuario.setIdUser(generatedKeys.getInt(1));
+                            cerrarConexion(conexion);
+
                         } else {
+                            cerrarConexion(conexion);
                             throw new SQLException("Error al obtener el ID generado para el usuario.");
                         }
                     }
                 } else {
+                    cerrarConexion(conexion);
                     throw new SQLException("Error al insertar el usuario en la base de datos.");
+                    
                 }
             }
         }
     }
 
-     @Override
+    @Override
     public void modificar(Usuario usuario) throws SQLException {
         try (Connection conexion = obtenerConexion()) {
             String consulta = "UPDATE usuario SET user = ?, password = ?, primerasesion = ? WHERE iduser = ?";
@@ -58,6 +68,8 @@ public class DAOUsuarioImpl extends ConexionBD implements DAOUsuario{
                 statement.setInt(4, usuario.getIdUser());
 
                 statement.executeUpdate();
+                cerrarConexion(conexion);
+
             }
         }
     }
@@ -68,8 +80,10 @@ public class DAOUsuarioImpl extends ConexionBD implements DAOUsuario{
             String consulta = "DELETE FROM usuario WHERE iduser = ?";
             try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
                 statement.setInt(1, usuario.getIdUser());
-
+                    
                 statement.executeUpdate();
+                cerrarConexion(conexion);
+
             }
         }
     }
@@ -97,17 +111,57 @@ public class DAOUsuarioImpl extends ConexionBD implements DAOUsuario{
     } 
     
     // Buscar Usuario.
-    public boolean autenticarUsuario(String usuario, String contrasena) throws SQLException {
+    public boolean autenticarUsuario(String usuarios, String contrasena) throws SQLException {
         try (Connection conexion = obtenerConexion()) {
             String consulta = "SELECT * FROM usuario WHERE user = ? AND password = ?";
             try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
-                statement.setString(1, usuario);
+                statement.setString(1, usuarios);
                 statement.setString(2, contrasena);
 
                 try (ResultSet resultSet = statement.executeQuery()) {
-                    return resultSet.next(); // Si hay al menos un resultado, las credenciales son válidas.
+                   
+                    if(resultSet.next()){         
+                        System.out.println("ID del usuario: " + resultSet.getInt("iduser"));
+                        System.out.println("Nombre de usuario: " + resultSet.getString("user"));
+                        System.out.println("Contraseña: ****");
+                        System.out.println("Primer sesión: " + resultSet.getInt("primerasesion"));
+                        this.usuario = new Usuario(resultSet.getInt("iduser"),resultSet.getString("user"),"****",resultSet.getInt("primerasesion"));
+                        cerrarConexion(conexion);
+                        return true;
+                    }
+                    else {
+                        cerrarConexion(conexion);
+                        return false;
+                    }
+                    
+                    
+                    
+
                 }
             }
+        }
+    }
+    
+        
+    public int cambiarPass(int id, String contrasena) throws SQLException {
+        if(contrasena == null || contrasena == ""){
+            return 2;
+        }
+        try (Connection conexion = obtenerConexion()) {
+            String consulta = "UPDATE usuario SET password = ?, primerasesion = 1 WHERE iduser = ?";
+            try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
+                statement.setString(1, contrasena);
+                statement.setInt(2, id);
+                if(statement.executeUpdate() == 1){
+                    cerrarConexion(conexion);
+                    return 1;
+                } 
+                else {
+                    cerrarConexion(conexion);
+                    return 0;
+                }
+                
+           }
         }
     }
     
