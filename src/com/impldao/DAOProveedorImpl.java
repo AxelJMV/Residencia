@@ -74,7 +74,7 @@ public class DAOProveedorImpl extends ConexionBD implements DAOProveedor{
     }
 
     @Override
-    public void eliminar(Proveedor proveedor) throws Exception {
+    public void eliminarIdProveedor(Proveedor proveedor) throws Exception {
            try (Connection conexion = obtenerConexion()) {
             String consulta = "DELETE FROM proveedor WHERE idproveedor = ?";
             try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
@@ -91,7 +91,7 @@ public class DAOProveedorImpl extends ConexionBD implements DAOProveedor{
     public List<Proveedor> listar() throws Exception {
         List<Proveedor> proveedores = new ArrayList<>();
         try (Connection conexion = obtenerConexion()) {
-            String consulta = "SELECT * FROM proveedores";
+            String consulta = "SELECT * FROM proveedor";
             try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
@@ -106,6 +106,40 @@ public class DAOProveedorImpl extends ConexionBD implements DAOProveedor{
             }
         }
         return proveedores;
+    }
+
+    @Override
+    public Proveedor buscarPorNombre(Proveedor proveedor) throws Exception {
+         Proveedor proveedorEncontrado = null;
+        try (Connection conexion = obtenerConexion()) {
+            String consulta = "SELECT * FROM proveedor WHERE nombre = ?";
+            try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
+                statement.setString(1, proveedor.getNombre());
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        proveedorEncontrado = new Proveedor();
+                        proveedorEncontrado.setIdProveedor(resultSet.getInt("idproveedor"));
+                        proveedorEncontrado.setNombre(resultSet.getString("nombre"));
+                        proveedorEncontrado.setDescripcion(resultSet.getString("descripcion"));
+                    }
+                }
+            }
+        }
+        return proveedorEncontrado;
+    }
+
+    @Override
+    public void eliminarNombre(Proveedor proveedor) throws Exception {
+             try (Connection conexion = obtenerConexion()) {
+            String consulta = "DELETE FROM proveedor WHERE nombre = ?";
+            try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
+                statement.setString(1,proveedor.getNombre());
+                    
+                statement.executeUpdate();
+                cerrarConexion(conexion);
+
+            }
+        }
     }
     }
 

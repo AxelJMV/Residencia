@@ -71,7 +71,7 @@ public class DAOProductoImpl extends ConexionBD implements DAOProducto{
     }
 
     @Override
-    public void eliminar(Producto producto) throws Exception {
+    public void eliminarIdentificador(Producto producto) throws Exception {
             try (Connection conexion = obtenerConexion()) {
             String consulta = "DELETE FROM producto WHERE identificador = ?";
             try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
@@ -104,6 +104,41 @@ public class DAOProductoImpl extends ConexionBD implements DAOProducto{
             }
         }
         return productos;
+    }
+
+    @Override
+    public Producto buscarPorIdentificador(Producto producto) throws Exception {
+            Producto productoEncontrado = null;
+             try (Connection conexion = obtenerConexion()) {
+            String consulta = "SELECT * FROM proveedor WHERE identificador = ?";
+            try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
+                statement.setInt(1, producto.getIdentificador());
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        productoEncontrado = new Producto();
+                        productoEncontrado.setIdentificador(resultSet.getInt("identificador"));
+                        productoEncontrado.setNombre(resultSet.getString("nombre"));
+                        productoEncontrado.setCantidad(resultSet.getInt("cantidad"));
+                        productoEncontrado.setIdProveedor(resultSet.getInt("idproveedor"));
+                    }
+                }
+            }
+        }
+        return productoEncontrado; 
+    }
+
+    @Override
+    public void eliminarNombre(Producto producto) throws Exception {
+             try (Connection conexion = obtenerConexion()) {
+            String consulta = "DELETE FROM producto WHERE nombre = ?";
+            try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
+                statement.setString(1,producto.getNombre());
+                    
+                statement.executeUpdate();
+                cerrarConexion(conexion);
+
+            }
+        }
     }
     
 }

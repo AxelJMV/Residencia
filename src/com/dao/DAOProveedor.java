@@ -15,6 +15,10 @@ public interface DAOProveedor {
     //Creamos metodos CRUD
     public void registrar(Proveedor proveedor) throws Exception;
     public void modificar(Proveedor proveedor) throws Exception;
-    public void eliminar(Proveedor proveedor) throws Exception;
+    public void eliminarIdProveedor(Proveedor proveedor) throws Exception;
+    public void eliminarNombre(Proveedor proveedor) throws Exception;
     public List<Proveedor> listar() throws Exception;
+    
+    // Nuevo método para búsqueda por idProveedor
+    Proveedor buscarPorNombre(Proveedor proveedor) throws Exception;
 }
