@@ -8,6 +8,8 @@ import com.clases.Proveedor;
 import com.impldao.*;
 import com.apoyo.ProveedorComboBoxModel;
 import com.clases.Producto;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.math.BigInteger;
 import java.util.List;
 import javax.swing.JComboBox;
@@ -42,6 +44,8 @@ public class productos_panel extends javax.swing.JPanel {
     javax.swing.JOptionPane.showMessageDialog(this, "ERROR PROVEEDORES: " + e, "", javax.swing.JOptionPane.INFORMATION_MESSAGE);
     daoProveedor = null;
     }
+    
+    
 
     }
     

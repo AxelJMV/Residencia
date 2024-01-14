@@ -30,18 +30,18 @@ public class Menu extends javax.swing.JFrame {
         
         // Cierre de la aplicación cuando se cierra la ventana
         setDefaultCloseOperation(this.EXIT_ON_CLOSE);
-        productos = new productos_panel();   
-        proveedor = new proveedor_panel();
         selector1.initMoving(Menu.this);
         selector1.addEventMenuSelected(new EventMenuSelected() {
             @Override
             public void selected(int index) {
                 System.out.println(index);
                 if(index == 4){
+                productos = new productos_panel();
                 setForm(productos);
                 } else if(index == 1){
                 
                 }else if(index == 5){
+                proveedor = new proveedor_panel();
                 setForm(proveedor);
                 }
                 else if(index == 8){
