@@ -4,6 +4,8 @@
  */
 package com.clases;
 
+import java.math.BigInteger;
+
 /**
  *
  * @author Axel
@@ -11,21 +13,41 @@ package com.clases;
 public class Producto {
     
     private int idProducto;
-    private int identificador;
+    private String identificador;
     private String nombre;
     private int cantidad;
     private int idProveedor;
+    private double precio;
 
     public Producto() {
     }
     
     
 
-    public Producto(int identificador, String nombre, int cantidad, int idProveedor) {
+    public Producto(String identificador, String nombre, int cantidad, int idProveedor) {
         this.identificador = identificador;
         this.nombre = nombre;
         this.cantidad = cantidad;
         this.idProveedor = idProveedor;
+    }
+    
+    
+     public Producto(int idProducto,String identificador, String nombre, int cantidad, int idProveedor, double precio) {
+        this.idProducto = idProducto;
+        this.identificador = identificador;
+        this.nombre = nombre;
+        this.cantidad = cantidad;
+        this.idProveedor = idProveedor;
+        this.precio = precio;
+    }
+    
+    
+     public Producto(String identificador, String nombre, int cantidad, int idProveedor, double precio) {
+        this.identificador = identificador;
+        this.nombre = nombre;
+        this.cantidad = cantidad;
+        this.idProveedor = idProveedor;
+        this.precio = precio;
     }
     
     
@@ -38,11 +60,11 @@ public class Producto {
         this.idProducto = idProducto;
     }
 
-    public int getIdentificador() {
+    public String getIdentificador() {
         return identificador;
     }
 
-    public void setIdentificador(int identificador) {
+    public void setIdentificador(String identificador) {
         this.identificador = identificador;
     }
 
@@ -70,6 +92,13 @@ public class Producto {
         this.idProveedor = idProveedor;
     }
     
+    public void setPrecio(double precio){
+        this.precio = precio;
+    }
+    
+    public double getPrecio(){
+        return precio;
+    }
     
     
     

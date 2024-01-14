@@ -24,12 +24,14 @@ public class DAOProductoImpl extends ConexionBD implements DAOProducto{
     @Override
     public void registrar(Producto producto) throws Exception {
               try (Connection conexion = obtenerConexion()) {
-            String consulta = "INSERT INTO producto (identificador,nombre,cantidad,idproveedor) VALUES (?,?,?,?)";
+            //String consulta = "INSERT INTO producto (identificador,nombre,cantidad,idproveedor) VALUES (?,?,?,?)";
+            String consulta = "INSERT INTO producto (identificador,nombre,cantidad,idproveedor,precio) VALUES (?,?,?,?,?)";
                  try (PreparedStatement statement = conexion.prepareStatement(consulta, PreparedStatement.RETURN_GENERATED_KEYS)) {
-                statement.setInt(1, producto.getIdentificador());
+                statement.setString(1, producto.getIdentificador());
                 statement.setString(2, producto.getNombre());
                 statement.setInt(3, producto.getCantidad());
                 statement.setInt(4, producto.getIdProveedor());
+                statement.setDouble(5, producto.getPrecio());
                 
 
                 int filasAfectadas = statement.executeUpdate();
@@ -57,12 +59,13 @@ public class DAOProductoImpl extends ConexionBD implements DAOProducto{
     @Override
     public void modificar(Producto producto) throws Exception {
             try (Connection conexion = obtenerConexion()) {
-            String consulta = "UPDATE producto SET nombre = ?, cantidad = ?, idproveedor = ? WHERE  identificador = ?";
+            String consulta = "UPDATE producto SET nombre = ?, cantidad = ?, idproveedor = ?, precio = ? WHERE  identificador = ?";
             try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
                 statement.setString(1, producto.getNombre());
                 statement.setInt(2, producto.getCantidad());
                 statement.setInt(3, producto.getIdProveedor());
-                statement.setInt(4, producto.getIdentificador());
+                statement.setDouble(4, producto.getPrecio());
+                statement.setString(5, producto.getIdentificador());
                 
                 statement.executeUpdate();
                 cerrarConexion(conexion);
@@ -75,7 +78,7 @@ public class DAOProductoImpl extends ConexionBD implements DAOProducto{
             try (Connection conexion = obtenerConexion()) {
             String consulta = "DELETE FROM producto WHERE identificador = ?";
             try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
-                statement.setInt(1,producto.getIdentificador());
+                statement.setObject(1,producto.getIdentificador());
                     
                 statement.executeUpdate();
                 cerrarConexion(conexion);
@@ -93,11 +96,11 @@ public class DAOProductoImpl extends ConexionBD implements DAOProducto{
                 try (ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
                         Producto producto = new Producto();
-                        producto.setIdentificador(resultSet.getInt("identificador"));
+                        producto.setIdentificador(resultSet.getString("identificador"));
                         producto.setNombre(resultSet.getString("nombre"));
                         producto.setCantidad(resultSet.getInt("cantidad"));
                         producto.setIdProveedor(resultSet.getInt("idproveedor"));
-                                              
+                        producto.setPrecio(resultSet.getDouble("precio"));                   
                         productos.add(producto);
                     }
                 }
@@ -110,16 +113,18 @@ public class DAOProductoImpl extends ConexionBD implements DAOProducto{
     public Producto buscarPorIdentificador(Producto producto) throws Exception {
             Producto productoEncontrado = null;
              try (Connection conexion = obtenerConexion()) {
-            String consulta = "SELECT * FROM proveedor WHERE identificador = ?";
+            String consulta = "SELECT * FROM producto WHERE identificador = ?";
             try (PreparedStatement statement = conexion.prepareStatement(consulta)) {
-                statement.setInt(1, producto.getIdentificador());
+                System.out.println(producto.getIdentificador());
+                statement.setString(1, producto.getIdentificador());
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         productoEncontrado = new Producto();
-                        productoEncontrado.setIdentificador(resultSet.getInt("identificador"));
+                        productoEncontrado.setIdentificador(resultSet.getString("identificador"));
                         productoEncontrado.setNombre(resultSet.getString("nombre"));
                         productoEncontrado.setCantidad(resultSet.getInt("cantidad"));
                         productoEncontrado.setIdProveedor(resultSet.getInt("idproveedor"));
+                        productoEncontrado.setPrecio(resultSet.getDouble("precio"));
                     }
                 }
             }

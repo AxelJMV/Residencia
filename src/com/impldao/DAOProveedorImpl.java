@@ -65,10 +65,8 @@ public class DAOProveedorImpl extends ConexionBD implements DAOProveedor{
                 statement.setString(1, proveedor.getNombre());
                 statement.setString(2, proveedor.getDescripcion());
                 statement.setInt(3, proveedor.getIdProveedor());
-
                 statement.executeUpdate();
                 cerrarConexion(conexion);
-
             }
         }
     }
@@ -86,7 +84,7 @@ public class DAOProveedorImpl extends ConexionBD implements DAOProveedor{
             }
         }
     }
-
+    
     @Override
     public List<Proveedor> listar() throws Exception {
         List<Proveedor> proveedores = new ArrayList<>();

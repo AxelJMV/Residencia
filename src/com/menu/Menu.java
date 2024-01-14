@@ -5,16 +5,23 @@
 package com.menu;
 
 import java.awt.Color;
-
+import javax.swing.JComponent;
+import com.interfaz.EventMenuSelected;
+import com.panels.productos_panel;
+import com.panels.proveedor_panel;
+import com.apoyo.ScrollBar;
+import com.login.Login;
+import javax.swing.JScrollPane;
 /**
  *
  * @author PC
  */
 public class Menu extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Menu
-     */
+    
+    private productos_panel productos;
+    private proveedor_panel proveedor;
+    
     public Menu() {
         initComponents();
         setBackground(new Color(0,0,0,0));
@@ -23,6 +30,30 @@ public class Menu extends javax.swing.JFrame {
         
         // Cierre de la aplicación cuando se cierra la ventana
         setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+        productos = new productos_panel();   
+        proveedor = new proveedor_panel();
+        selector1.initMoving(Menu.this);
+        selector1.addEventMenuSelected(new EventMenuSelected() {
+            @Override
+            public void selected(int index) {
+                System.out.println(index);
+                if(index == 4){
+                setForm(productos);
+                } else if(index == 1){
+                
+                }else if(index == 5){
+                setForm(proveedor);
+                }
+                else if(index == 8){
+                dispose();
+                new Login().setVisible(true);
+                }
+                
+            }
+        });
+        //  set when system open start with home form
+        
+        
 
     }
 
@@ -37,10 +68,9 @@ public class Menu extends javax.swing.JFrame {
 
         panelBordeado1 = new com.panels.PanelBordeado();
         selector1 = new com.componentes.selector();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        panelPrincipal = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1170, 657));
         setMinimumSize(new java.awt.Dimension(1170, 657));
         setUndecorated(true);
 
@@ -50,9 +80,8 @@ public class Menu extends javax.swing.JFrame {
         selector1.setMinimumSize(new java.awt.Dimension(162, 555));
         selector1.setPreferredSize(new java.awt.Dimension(215, 555));
 
-        jScrollPane1.setBorder(null);
-        jScrollPane1.setForeground(new java.awt.Color(255, 255, 255));
-        jScrollPane1.setOpaque(false);
+        panelPrincipal.setOpaque(false);
+        panelPrincipal.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout panelBordeado1Layout = new javax.swing.GroupLayout(panelBordeado1);
         panelBordeado1.setLayout(panelBordeado1Layout);
@@ -60,13 +89,13 @@ public class Menu extends javax.swing.JFrame {
             panelBordeado1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBordeado1Layout.createSequentialGroup()
                 .addComponent(selector1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 977, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelBordeado1Layout.setVerticalGroup(
             panelBordeado1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(selector1, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
-            .addComponent(jScrollPane1)
+            .addComponent(panelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -86,6 +115,14 @@ public class Menu extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    
+    
+        private void setForm(JComponent com) {
+        panelPrincipal.removeAll();
+        panelPrincipal.add(com);
+        panelPrincipal.repaint();
+        panelPrincipal.revalidate();
+    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -119,8 +156,8 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
     private com.panels.PanelBordeado panelBordeado1;
+    private javax.swing.JPanel panelPrincipal;
     private com.componentes.selector selector1;
     // End of variables declaration//GEN-END:variables
 }

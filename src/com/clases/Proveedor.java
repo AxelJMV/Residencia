@@ -21,6 +21,12 @@ public class Proveedor {
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
+    
+    public Proveedor(int idProveedor,String nombre, String descripcion) {
+        this.idProveedor = idProveedor;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+    }
 
     public int getIdProveedor() {
         return idProveedor;
@@ -45,7 +51,10 @@ public class Proveedor {
     public void setIdProveedor(int id) {
         this.idProveedor = id;
     }
-    
+    @Override
+    public String toString() {
+    return getNombre();  // O cualquier otra lógica que quieras para representar el proveedor como cadena
+    }   
     
     
     
